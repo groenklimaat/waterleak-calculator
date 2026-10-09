@@ -1,0 +1,1702 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Calculate how much water and money you lose from a leaking faucet. Free tool by Bleu Magic Whale.">
+<meta name="keywords" content="water leak, leaking faucet, water waste, water calculator, save water, climate, Bleu Magic Whale">
+<meta name="author" content="Bleu Magic Whale">
+<meta name="robots" content="index, follow">
+<title>💧 Water Leakage Calculator V2 | Bleu Magic Whale</title>
+<style>
+:root {
+  --primary: #0078d7;
+  --primary-dark: #0056a3;
+  --primary-light: #e6f2ff;
+  --accent: #00b4d8;
+  --danger: #d32f2f;
+  --warning: #ffc107;
+  --success: #2e7d32;
+  --bg: #f0f8ff;
+  --card: #ffffff;
+  --text: #1a1a1a;
+  --text-muted: #666;
+  --border: #d0e4f5;
+}
+
+* {
+  box-sizing: border-box;
+  font-family: 'Segoe UI', system-ui, -apple-system, Tahoma, Geneva, Verdana, sans-serif;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background: linear-gradient(135deg, #e6f7ff 0%, #b3e0ff 100%);
+  color: var(--text);
+  line-height: 1.6;
+  min-height: 100vh;
+  padding: 20px;
+}
+
+.app-container {
+  max-width: 1100px;
+  margin: 0 auto;
+  background: var(--card);
+  border-radius: 18px;
+  box-shadow: 0 20px 50px rgba(0, 120, 215, 0.2);
+  overflow: hidden;
+}
+
+.header {
+  background: linear-gradient(120deg, #0078d7 0%, #00b4d8 100%);
+  color: white;
+  padding: 25px 30px 30px;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.header::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at 20% 30%, rgba(255,255,255,0.15) 0%, transparent 50%),
+              radial-gradient(circle at 80% 70%, rgba(255,255,255,0.1) 0%, transparent 50%);
+  pointer-events: none;
+}
+
+.faucet-logo {
+  display: block;
+  margin: 0 auto 15px;
+  width: 90px;
+  height: 90px;
+  position: relative;
+  z-index: 1;
+  animation: glow 3s ease-in-out infinite;
+}
+
+.faucet-logo svg {
+  width: 100%;
+  height: 100%;
+}
+
+@keyframes drip {
+  0% { transform: translateY(0); opacity: 0; }
+  10% { opacity: 1; }
+  90% { opacity: 1; }
+  100% { transform: translateY(30px); opacity: 0; }
+}
+
+@keyframes drip2 {
+  0% { transform: translateY(0); opacity: 0; }
+  10% { opacity: 1; }
+  90% { opacity: 1; }
+  100% { transform: translateY(30px); opacity: 0; }
+}
+
+.drip-1 {
+  animation: drip 2s ease-in infinite;
+  transform-origin: center;
+}
+
+.drip-2 {
+  animation: drip2 2s ease-in infinite;
+  animation-delay: 0.7s;
+}
+
+@keyframes glow {
+  0%, 100% {
+    filter: drop-shadow(0 4px 12px rgba(0, 0, 0, 0.2)) drop-shadow(0 0 8px rgba(0, 180, 216, 0.4));
+  }
+  50% {
+    filter: drop-shadow(0 4px 12px rgba(0, 0, 0, 0.2)) drop-shadow(0 0 20px rgba(0, 180, 216, 0.8));
+  }
+}
+
+.header h1 {
+  font-size: 2em;
+  margin-bottom: 8px;
+  position: relative;
+  z-index: 1;
+}
+
+.header p {
+  opacity: 0.95;
+  font-size: 1em;
+  position: relative;
+  z-index: 1;
+}
+
+.whale-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(255, 255, 255, 0.2);
+  padding: 6px 14px;
+  border-radius: 20px;
+  font-size: 0.85em;
+  margin-top: 12px;
+  position: relative;
+  z-index: 1;
+  backdrop-filter: blur(10px);
+}
+
+.language-selector {
+  background: #f8fafc;
+  padding: 15px 30px;
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.language-selector label {
+  font-weight: 600;
+  color: var(--primary-dark);
+  font-size: 0.95em;
+}
+
+.language-selector select {
+  padding: 8px 15px;
+  border: 2px solid var(--primary-light);
+  border-radius: 8px;
+  background: white;
+  font-size: 15px;
+  min-width: 220px;
+  cursor: pointer;
+  transition: border-color 0.2s;
+}
+
+.language-selector select:hover {
+  border-color: var(--primary);
+}
+
+.main-content {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.calculator-section {
+  flex: 1;
+  min-width: 320px;
+  padding: 30px;
+  border-right: 1px solid var(--border);
+}
+
+.results-section {
+  flex: 1;
+  min-width: 320px;
+  padding: 30px;
+  background: #f8fafc;
+}
+
+h2 {
+  color: var(--primary-dark);
+  font-size: 1.3em;
+  margin-bottom: 20px;
+  padding-bottom: 10px;
+  border-bottom: 2px solid var(--primary-light);
+}
+
+h3 {
+  color: var(--primary-dark);
+  font-size: 1.05em;
+  margin-bottom: 15px;
+}
+
+.input-group {
+  margin-bottom: 22px;
+}
+
+.input-group label {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: 600;
+  color: var(--primary-dark);
+  font-size: 0.95em;
+}
+
+select, input[type="number"] {
+  width: 100%;
+  padding: 12px 15px;
+  border: 2px solid var(--border);
+  border-radius: 8px;
+  font-size: 16px;
+  background: white;
+  transition: all 0.2s;
+}
+
+select:focus, input[type="number"]:focus {
+  outline: none;
+  border-color: var(--primary);
+  box-shadow: 0 0 0 4px rgba(0, 120, 215, 0.1);
+}
+
+.button-group {
+  display: flex;
+  gap: 10px;
+  margin: 25px 0;
+}
+
+button {
+  padding: 14px 25px;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  font-size: 16px;
+  font-weight: 600;
+  transition: all 0.2s;
+  flex-grow: 1;
+  font-family: inherit;
+}
+
+.calculate-btn {
+  background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%);
+  color: white;
+  box-shadow: 0 4px 12px rgba(0, 120, 215, 0.3);
+}
+
+.calculate-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 18px rgba(0, 120, 215, 0.4);
+}
+
+.reset-btn {
+  background: #f0f0f0;
+  color: var(--text);
+}
+
+.reset-btn:hover {
+  background: #e0e0e0;
+}
+
+.total-cost {
+  text-align: center;
+  font-size: 2.2em;
+  font-weight: 800;
+  color: var(--danger);
+  margin: 0 0 25px 0;
+  padding: 22px;
+  background: linear-gradient(135deg, #ffe6e6 0%, #ffcccc 100%);
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(211, 47, 47, 0.15);
+}
+
+.result-box {
+  background: white;
+  border-radius: 12px;
+  padding: 22px;
+  margin-bottom: 20px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  border-left: 5px solid var(--primary);
+}
+
+.result-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+  padding-bottom: 12px;
+  border-bottom: 1px dashed #cce4ff;
+  gap: 10px;
+}
+
+.result-item:last-child {
+  border-bottom: none;
+  margin-bottom: 0;
+  padding-bottom: 0;
+}
+
+.result-value {
+  font-weight: 700;
+  color: var(--danger);
+  text-align: right;
+  white-space: nowrap;
+}
+
+.visual-comparison {
+  background: linear-gradient(135deg, #e6f7ff 0%, #cceeff 100%);
+  border-radius: 12px;
+  padding: 22px;
+  margin: 20px 0;
+  border-left: 5px solid var(--accent);
+}
+
+.visual-comparison h3 {
+  margin-bottom: 15px;
+}
+
+.visual-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 12px;
+  padding: 10px 12px;
+  background: white;
+  border-radius: 8px;
+  font-size: 0.95em;
+}
+
+.visual-item:last-child {
+  margin-bottom: 0;
+}
+
+.visual-icon {
+  font-size: 1.8em;
+  line-height: 1;
+  flex-shrink: 0;
+}
+
+.visual-text {
+  flex: 1;
+}
+
+.visual-text strong {
+  color: var(--danger);
+}
+
+.highlight-box {
+  background: linear-gradient(135deg, #fff9e6 0%, #fff3cd 100%);
+  border-left: 5px solid var(--warning);
+  padding: 20px;
+  margin-top: 20px;
+  border-radius: 0 12px 12px 0;
+  font-size: 0.95em;
+}
+
+.highlight-box strong {
+  color: var(--primary-dark);
+}
+
+.share-section {
+  margin-top: 20px;
+  text-align: center;
+}
+
+.share-btn {
+  background: linear-gradient(135deg, #25d366 0%, #128c7e 100%);
+  color: white;
+  padding: 14px 25px;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  font-size: 16px;
+  font-weight: 600;
+  width: 100%;
+  box-shadow: 0 4px 12px rgba(37, 211, 102, 0.3);
+  transition: all 0.2s;
+  font-family: inherit;
+}
+
+.share-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 18px rgba(37, 211, 102, 0.4);
+}
+
+.footer {
+  text-align: center;
+  padding: 20px;
+  color: var(--text-muted);
+  font-size: 0.85em;
+  border-top: 1px solid var(--border);
+  background: #fafcff;
+}
+
+.footer a {
+  color: var(--primary);
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.footer a:hover {
+  text-decoration: underline;
+}
+
+.whale-footer {
+  font-size: 1.2em;
+  margin-bottom: 6px;
+}
+
+.hidden {
+  display: none !important;
+}
+
+@media (max-width: 768px) {
+  .main-content {
+    flex-direction: column;
+  }
+  
+  .calculator-section {
+    border-right: none;
+    border-bottom: 1px solid var(--border);
+  }
+  
+  .language-selector {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  
+  .language-selector select {
+    min-width: 100%;
+  }
+  
+  .header h1 {
+    font-size: 1.5em;
+  }
+  
+  .total-cost {
+    font-size: 1.7em;
+  }
+  
+  .button-group {
+    flex-direction: column;
+  }
+  
+  .faucet-logo {
+    width: 70px;
+    height: 70px;
+  }
+}
+</style>
+</head>
+<body>
+<div class="app-container">
+
+  <div class="header">
+    <div class="faucet-logo">
+      <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+        <path d="M 30 35 L 30 25 Q 30 20 35 20 L 65 20 Q 70 20 70 25 L 70 35 Z" 
+              fill="#ffffff" stroke="#0056a3" stroke-width="2" stroke-linejoin="round"/>
+        <rect x="45" y="35" width="10" height="15" fill="#ffffff" 
+              stroke="#0056a3" stroke-width="2"/>
+        <circle cx="50" cy="15" r="6" fill="#ffffff" 
+                stroke="#0056a3" stroke-width="2"/>
+        <line x1="50" y1="9" x2="50" y2="4" stroke="#0056a3" stroke-width="2" stroke-linecap="round"/>
+        <path d="M 50 50 L 50 60 Q 50 68 58 68 L 62 68" 
+              fill="none" stroke="#0056a3" stroke-width="6" stroke-linecap="round"/>
+        <path d="M 50 50 L 50 60 Q 50 68 58 68 L 62 68" 
+              fill="none" stroke="#ffffff" stroke-width="3" stroke-linecap="round"/>
+        <ellipse class="drip-1" cx="62" cy="75" rx="3" ry="5" fill="#e0f4ff" 
+                 stroke="#00b4d8" stroke-width="1"/>
+        <ellipse class="drip-2" cx="62" cy="75" rx="2.5" ry="4" fill="#e0f4ff" 
+                 stroke="#00b4d8" stroke-width="1"/>
+        <ellipse cx="62" cy="90" rx="15" ry="3" fill="#00b4d8" opacity="0.3"/>
+      </svg>
+    </div>
+    <h1 id="app-title">💧 Water Leakage Calculator</h1>
+    <p id="app-subtitle">Calculate how much water and money you lose from a leaking faucet</p>
+    <div class="whale-badge">
+      <span>🐳</span>
+      <span>Bleu Magic Whale</span>
+    </div>
+  </div>
+
+  <div class="language-selector">
+    <label for="languageSelect" id="language-label">Select language:</label>
+    <select id="languageSelect">
+      <option value="en">🇬🇧 English</option>
+      <option value="nl">🇳🇱 Nederlands</option>
+      <option value="fr">🇫🇷 Français</option>
+      <option value="de">🇩🇪 Deutsch</option>
+      <option value="es">🇪🇸 Español</option>
+      <option value="it">🇮🇹 Italiano</option>
+      <option value="pt">🇵🇹 Português</option>
+      <option value="pl">🇵🇱 Polski</option>
+      <option value="sv">🇸🇪 Svenska</option>
+      <option value="ru">🇷🇺 Русский</option>
+      <option value="zh">🇨🇳 中文</option>
+      <option value="ja">🇯🇵 日本語</option>
+      <option value="ar">🇸🇦 العربية</option>
+      <option value="he">🇮🇱 עברית</option>
+      <option value="tr">🇹🇷 Türkçe</option>
+    </select>
+  </div>
+
+  <div class="main-content">
+    <div class="calculator-section">
+      <h2 id="settings-title">⚙️ Calculator Settings</h2>
+      <div class="input-group">
+        <label for="leakType" id="leak-type-label">Leak type / flow rate:</label>
+        <select id="leakType"></select>
+      </div>
+      <div id="customLeakRate" class="input-group hidden">
+        <label for="customRate" id="custom-rate-label">Custom flow rate (liters per hour):</label>
+        <input type="number" id="customRate" min="0.01" step="0.01" value="4">
+      </div>
+      <div class="input-group">
+        <label for="currency" id="currency-label">Currency:</label>
+        <select id="currency">
+          <option value="€">€ Euro</option>
+          <option value="$">$ US Dollar</option>
+          <option value="£">£ British Pound</option>
+          <option value="¥">¥ Yen / Yuan</option>
+          <option value="CHF">CHF Swiss Franc</option>
+          <option value="kr">kr Scandinavian Krone</option>
+          <option value="zł">zł Polish Zloty</option>
+          <option value="₽">₽ Russian Ruble</option>
+          <option value="₹">₹ Indian Rupee</option>
+          <option value="R$">R$ Brazilian Real</option>
+        </select>
+      </div>
+      <div class="input-group">
+        <label for="pricePerM3" id="price-label">Water price per m³:</label>
+        <input type="number" id="pricePerM3" min="0.1" step="0.01" value="5.70">
+      </div>
+      <div class="input-group">
+        <label for="regionPreset" id="preset-label">or choose a region:</label>
+        <select id="regionPreset"></select>
+      </div>
+      <div class="button-group">
+        <button id="calculateBtn" class="calculate-btn">🧮 Calculate</button>
+        <button id="resetBtn" class="reset-btn">↺ Reset</button>
+      </div>
+    </div>
+
+    <div class="results-section">
+      <h2 id="results-title">📊 Results</h2>
+      <div class="total-cost" id="yearlyCostDisplay">€0.00 per year</div>
+      <div class="result-box">
+        <h3 id="water-loss-title">💧 Water Loss</h3>
+        <div class="result-item"><span id="hourly-loss-label">Per hour:</span><span class="result-value" id="hourlyLoss">0.00 L</span></div>
+        <div class="result-item"><span id="daily-loss-label">Per day (24h):</span><span class="result-value" id="dailyLoss">0.00 L</span></div>
+        <div class="result-item"><span id="monthly-loss-label">Per month (30 days):</span><span class="result-value" id="monthlyLoss">0 L</span></div>
+        <div class="result-item"><span id="yearly-loss-label">Per year:</span><span class="result-value" id="yearlyLoss">0 L</span></div>
+      </div>
+      <div class="result-box">
+        <h3 id="costs-title">💶 Costs</h3>
+        <div class="result-item"><span id="daily-cost-label">Per day:</span><span class="result-value" id="dailyCost">€0.00</span></div>
+        <div class="result-item"><span id="monthly-cost-label">Per month:</span><span class="result-value" id="monthlyCost">€0.00</span></div>
+        <div class="result-item"><span id="yearly-cost-label">Per year:</span><span class="result-value" id="yearlyCost">€0.00</span></div>
+      </div>
+      <div class="visual-comparison" id="visual-comparison">
+        <h3 id="visual-title">👀 That's about...</h3>
+        <div class="visual-item"><span class="visual-icon">🥤</span><span class="visual-text" id="visual-bottles">— bottles of water (1.5 L)</span></div>
+        <div class="visual-item"><span class="visual-icon">🚿</span><span class="visual-text" id="visual-showers">— showers (100 L)</span></div>
+        <div class="visual-item"><span class="visual-icon">🛢️</span><span class="visual-text" id="visual-barrels">— rain barrels (75 L)</span></div>
+        <div class="visual-item"><span class="visual-icon">🥛</span><span class="visual-text" id="visual-drinking">— days of drinking water (1.5 L/day)</span></div>
+      </div>
+      <div class="highlight-box">
+        <p id="repair-tip"><strong>🔧 Repair pays off!</strong> The costs above are what you <strong>waste yearly</strong>. A plumber can often fix a leaking faucet in less than an hour. That one-time cost is almost always lower than the annual loss.</p>
+      </div>
+      <div class="share-section">
+        <button id="shareBtn" class="share-btn">📤 Share this result</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer">
+    <div class="whale-footer">🐳 🌊 🐋</div>
+    <p id="footer-text">A free tool by <a href="https://magicwhale.eu" target="_blank" rel="noopener">Bleu Magic Whale</a> · Open source · No tracking</p>
+  </div>
+
+</div>
+
+<script>
+// ============================================================
+// TRANSLATIONS — 15 languages
+// ============================================================
+const translations = {
+  en: {
+    appTitle: "💧 Water Leakage Calculator",
+    appSubtitle: "Calculate how much water and money you lose from a leaking faucet",
+    languageLabel: "Select language:",
+    settingsTitle: "⚙️ Calculator Settings",
+    leakTypeLabel: "Leak type / flow rate:",
+    customRateLabel: "Custom flow rate (liters per hour):",
+    currencyLabel: "Currency:",
+    priceLabel: "Water price per m³:",
+    presetLabel: "or choose a region:",
+    calculateBtn: "🧮 Calculate",
+    resetBtn: "↺ Reset",
+    resultsTitle: "📊 Results",
+    yearlyCostDisplay: "per year",
+    waterLossTitle: "💧 Water Loss",
+    hourlyLossLabel: "Per hour:",
+    dailyLossLabel: "Per day (24h):",
+    monthlyLossLabel: "Per month (30 days):",
+    yearlyLossLabel: "Per year:",
+    costsTitle: "💶 Costs",
+    dailyCostLabel: "Per day:",
+    monthlyCostLabel: "Per month:",
+    yearlyCostLabel: "Per year:",
+    visualTitle: "👀 That's about...",
+    bottlesText: "bottles of water (1.5 L)",
+    showersText: "showers (100 L)",
+    barrelsText: "rain barrels (75 L)",
+    drinkingText: "days of drinking water (1.5 L/day)",
+    repairTip: "<strong>🔧 Repair pays off!</strong> The costs above are what you <strong>waste yearly</strong>. A plumber can often fix a leaking faucet in less than an hour. That one-time cost is almost always lower than the annual loss.",
+    footerText: 'A free tool by <a href="https://magicwhale.eu" target="_blank" rel="noopener">Bleu Magic Whale</a> · Open source · No tracking',
+    shareBtn: "📤 Share this result",
+    shareText: (y, c, cur) => `💧 My leaking faucet wastes ${y} liters of water per year — that's ${cur}${c}! Calculate yours:`,
+    leakTypes: [
+      {label: "💧 1 drop per second (~1,577 L/year)", value: 1},
+      {label: "💧 10 drops per minute (~157 L/year)", value: 3},
+      {label: "💧 4 liters per hour (~35,040 L/year)", value: 2},
+      {label: "💧 Thin stream (~140,000 L/year)", value: 4},
+      {label: "⚙️ Custom flow rate", value: "custom"}
+    ],
+    presets: [
+      {label: "— Choose a region —", value: ""},
+      {label: "🇧🇪 Flanders (avg: €5.70/m³)", value: "5.70"},
+      {label: "🇧🇪 Flanders (low: €4.70/m³)", value: "4.70"},
+      {label: "🇧🇪 Flanders (high: €6.70/m³)", value: "6.70"},
+      {label: "🇳🇱 Netherlands (avg: €2.61/m³)", value: "2.61"},
+      {label: "🇩🇪 Germany (avg: €2.00/m³)", value: "2.00"},
+      {label: "🇫🇷 France (avg: €4.00/m³)", value: "4.00"},
+      {label: "🇬🇧 UK (~£3.00/m³)", value: "3.00"},
+      {label: "🇺🇸 USA (avg: $1.50/m³)", value: "1.50"},
+      {label: "🇨🇳 China (avg: ¥3.50/m³)", value: "3.50"},
+      {label: "🇨🇳 China (Beijing: ¥5.00/m³)", value: "5.00"},
+      {label: "🇯🇵 Japan (avg: ¥200/m³)", value: "200.00"},
+      {label: "🇮🇳 India (avg: ₹15/m³)", value: "15.00"},
+      {label: "🇧🇷 Brazil (avg: R$5.00/m³)", value: "5.00"},
+      {label: "🇦🇺 Australia (avg: $3.50/m³)", value: "3.50"}
+    ]
+  },
+  nl: {
+    appTitle: "💧 Water Lekkage Calculator",
+    appSubtitle: "Bereken hoeveel water en geld je verliest door een lekkende kraan",
+    languageLabel: "Selecteer taal:",
+    settingsTitle: "⚙️ Calculator Instellingen",
+    leakTypeLabel: "Type lek / leksnelheid:",
+    customRateLabel: "Aangepast lektempo (liter per uur):",
+    currencyLabel: "Valuta:",
+    priceLabel: "Waterprijs per m³:",
+    presetLabel: "of kies een regio:",
+    calculateBtn: "🧮 Berekenen",
+    resetBtn: "↺ Resetten",
+    resultsTitle: "📊 Resultaten",
+    yearlyCostDisplay: "per jaar",
+    waterLossTitle: "💧 Waterverlies",
+    hourlyLossLabel: "Per uur:",
+    dailyLossLabel: "Per dag (24u):",
+    monthlyLossLabel: "Per maand (30 dagen):",
+    yearlyLossLabel: "Per jaar:",
+    costsTitle: "💶 Kosten",
+    dailyCostLabel: "Per dag:",
+    monthlyCostLabel: "Per maand:",
+    yearlyCostLabel: "Per jaar:",
+    visualTitle: "👀 Dat is ongeveer...",
+    bottlesText: "flessen water (1,5 L)",
+    showersText: "douchebeurten (100 L)",
+    barrelsText: "regentonnen (75 L)",
+    drinkingText: "dagen drinkwater (1,5 L/dag)",
+    repairTip: "<strong>🔧 Reparatie loont!</strong> De kosten hierboven zijn wat je <strong>jaarlijks verspilt</strong>. Een loodgieter repareert een lekkende kraan vaak in minder dan een uur. Die eenmalige kost is bijna altijd lager dan het jaarlijkse verlies.",
+    footerText: 'Een gratis tool van <a href="https://magicwhale.eu" target="_blank" rel="noopener">Bleu Magic Whale</a> · Open source · Geen tracking',
+    shareBtn: "📤 Deel dit resultaat",
+    shareText: (y, c, cur) => `💧 Mijn lekkende kraan verspilt ${y} liter water per jaar — dat is ${cur}${c}! Bereken het zelf:`,
+    leakTypes: [
+      {label: "💧 1 druppel per seconde (~1.577 L/jaar)", value: 1},
+      {label: "💧 10 druppels per minuut (~157 L/jaar)", value: 3},
+      {label: "💧 4 liter per uur (~35.040 L/jaar)", value: 2},
+      {label: "💧 Dun waterstraaltje (~140.000 L/jaar)", value: 4},
+      {label: "⚙️ Aangepast lektempo", value: "custom"}
+    ],
+    presets: [
+      {label: "— Kies een regio —", value: ""},
+      {label: "🇧🇪 Vlaanderen (gemiddeld: €5,70/m³)", value: "5.70"},
+      {label: "🇧🇪 Vlaanderen (laag: €4,70/m³)", value: "4.70"},
+      {label: "🇧🇪 Vlaanderen (hoog: €6,70/m³)", value: "6.70"},
+      {label: "🇳🇱 Nederland (gemiddeld: €2,61/m³)", value: "2.61"},
+      {label: "🇩🇪 Duitsland (gemiddeld: €2,00/m³)", value: "2.00"},
+      {label: "🇫🇷 Frankrijk (gemiddeld: €4,00/m³)", value: "4.00"},
+      {label: "🇬🇧 Verenigd Koninkrijk (~£3,00/m³)", value: "3.00"},
+      {label: "🇺🇸 VS (gemiddeld: $1,50/m³)", value: "1.50"},
+      {label: "🇨🇳 China (gemiddeld: ¥3,50/m³)", value: "3.50"},
+      {label: "🇨🇳 China (Beijing: ¥5,00/m³)", value: "5.00"},
+      {label: "🇯🇵 Japan (gemiddeld: ¥200/m³)", value: "200.00"},
+      {label: "🇮🇳 India (gemiddeld: ₹15/m³)", value: "15.00"},
+      {label: "🇧🇷 Brazilië (gemiddeld: R$5,00/m³)", value: "5.00"},
+      {label: "🇦🇺 Australië (gemiddeld: $3,50/m³)", value: "3.50"}
+    ]
+  },
+  fr: {
+    appTitle: "💧 Calculateur de Fuites d'Eau",
+    appSubtitle: "Calculez la perte d'eau et d'argent d'un robinet qui fuit",
+    languageLabel: "Sélectionnez la langue:",
+    settingsTitle: "⚙️ Paramètres",
+    leakTypeLabel: "Type de fuite / débit:",
+    customRateLabel: "Débit personnalisé (litres par heure):",
+    currencyLabel: "Devise:",
+    priceLabel: "Prix de l'eau par m³:",
+    presetLabel: "ou choisissez une région:",
+    calculateBtn: "🧮 Calculer",
+    resetBtn: "↺ Réinitialiser",
+    resultsTitle: "📊 Résultats",
+    yearlyCostDisplay: "par an",
+    waterLossTitle: "💧 Perte d'Eau",
+    hourlyLossLabel: "Par heure:",
+    dailyLossLabel: "Par jour (24h):",
+    monthlyLossLabel: "Par mois (30 jours):",
+    yearlyLossLabel: "Par an:",
+    costsTitle: "💶 Coûts",
+    dailyCostLabel: "Par jour:",
+    monthlyCostLabel: "Par mois:",
+    yearlyCostLabel: "Par an:",
+    visualTitle: "👀 C'est environ...",
+    bottlesText: "bouteilles d'eau (1,5 L)",
+    showersText: "douches (100 L)",
+    barrelsText: "récupérateurs d'eau (75 L)",
+    drinkingText: "jours d'eau potable (1,5 L/jour)",
+    repairTip: "<strong>🔧 La réparation en vaut la peine !</strong> Les coûts ci-dessus sont ce que vous <strong>gaspillez annuellement</strong>. Un plombier peut souvent réparer un robinet qui fuit en moins d'une heure. Ce coût unique est presque toujours inférieur à la perte annuelle.",
+    footerText: 'Un outil gratuit de <a href="https://magicwhale.eu" target="_blank" rel="noopener">Bleu Magic Whale</a> · Open source · Aucun suivi',
+    shareBtn: "📤 Partager ce résultat",
+    shareText: (y, c, cur) => `💧 Mon robinet qui fuit gaspille ${y} litres d'eau par an — soit ${cur}${c} ! Calculez le vôtre :`,
+    leakTypes: [
+      {label: "💧 1 goutte par seconde (~1 577 L/an)", value: 1},
+      {label: "💧 10 gouttes par minute (~157 L/an)", value: 3},
+      {label: "💧 4 litres par heure (~35 040 L/an)", value: 2},
+      {label: "💧 Fin filet d'eau (~140 000 L/an)", value: 4},
+      {label: "⚙️ Débit personnalisé", value: "custom"}
+    ],
+    presets: [
+      {label: "— Choisissez une région —", value: ""},
+      {label: "🇧🇪 Flandre (moy: 5,70 €/m³)", value: "5.70"},
+      {label: "🇧🇪 Flandre (bas: 4,70 €/m³)", value: "4.70"},
+      {label: "🇧🇪 Flandre (haut: 6,70 €/m³)", value: "6.70"},
+      {label: "🇳🇱 Pays-Bas (moy: 2,61 €/m³)", value: "2.61"},
+      {label: "🇩🇪 Allemagne (moy: 2,00 €/m³)", value: "2.00"},
+      {label: "🇫🇷 France (moy: 4,00 €/m³)", value: "4.00"},
+      {label: "🇬🇧 Royaume-Uni (~3,00 £/m³)", value: "3.00"},
+      {label: "🇺🇸 États-Unis (moy: 1,50 $/m³)", value: "1.50"},
+      {label: "🇨🇳 Chine (moy: 3,50 ¥/m³)", value: "3.50"},
+      {label: "🇨🇳 Chine (Pékin: 5,00 ¥/m³)", value: "5.00"},
+      {label: "🇯🇵 Japon (moy: 200 ¥/m³)", value: "200.00"},
+      {label: "🇮🇳 Inde (moy: 15 ₹/m³)", value: "15.00"},
+      {label: "🇧🇷 Brésil (moy: 5,00 R$/m³)", value: "5.00"},
+      {label: "🇦🇺 Australie (moy: 3,50 $/m³)", value: "3.50"}
+    ]
+  },
+  de: {
+    appTitle: "💧 Wasserleckage-Rechner",
+    appSubtitle: "Berechnen Sie Wasserverlust und Kosten durch tropfende Wasserhähne",
+    languageLabel: "Sprache auswählen:",
+    settingsTitle: "⚙️ Einstellungen",
+    leakTypeLabel: "Leckart / Durchfluss:",
+    customRateLabel: "Benutzerdefinierter Durchfluss (Liter/Stunde):",
+    currencyLabel: "Währung:",
+    priceLabel: "Wasserpreis pro m³:",
+    presetLabel: "oder Region wählen:",
+    calculateBtn: "🧮 Berechnen",
+    resetBtn: "↺ Zurücksetzen",
+    resultsTitle: "📊 Ergebnisse",
+    yearlyCostDisplay: "pro Jahr",
+    waterLossTitle: "💧 Wasserverlust",
+    hourlyLossLabel: "Pro Stunde:",
+    dailyLossLabel: "Pro Tag (24 Std.):",
+    monthlyLossLabel: "Pro Monat (30 Tage):",
+    yearlyLossLabel: "Pro Jahr:",
+    costsTitle: "💶 Kosten",
+    dailyCostLabel: "Pro Tag:",
+    monthlyCostLabel: "Pro Monat:",
+    yearlyCostLabel: "Pro Jahr:",
+    visualTitle: "👀 Das sind etwa...",
+    bottlesText: "Wasserflaschen (1,5 L)",
+    showersText: "Duschen (100 L)",
+    barrelsText: "Regentonnen (75 L)",
+    drinkingText: "Tage Trinkwasser (1,5 L/Tag)",
+    repairTip: "<strong>🔧 Reparatur lohnt sich!</strong> Die oben genannten Kosten sind Ihr <strong>jährlicher Verlust</strong>. Ein Klempner kann einen tropfenden Wasserhahn oft in weniger als einer Stunde reparieren. Diese einmaligen Kosten sind fast immer niedriger als der jährliche Verlust.",
+    footerText: 'Ein kostenloses Tool von <a href="https://magicwhale.eu" target="_blank" rel="noopener">Bleu Magic Whale</a> · Open Source · Kein Tracking',
+    shareBtn: "📤 Ergebnis teilen",
+    shareText: (y, c, cur) => `💧 Mein tropfender Wasserhahn verschwendet ${y} Liter Wasser pro Jahr — das sind ${cur}${c}! Berechnen Sie Ihren:`,
+    leakTypes: [
+      {label: "💧 1 Tropfen/Sekunde (~1.577 L/Jahr)", value: 1},
+      {label: "💧 10 Tropfen/Minute (~157 L/Jahr)", value: 3},
+      {label: "💧 4 Liter/Stunde (~35.040 L/Jahr)", value: 2},
+      {label: "💧 Dünner Strahl (~140.000 L/Jahr)", value: 4},
+      {label: "⚙️ Benutzerdefiniert", value: "custom"}
+    ],
+    presets: [
+      {label: "— Region wählen —", value: ""},
+      {label: "🇧🇪 Flandern (Ø: 5,70 €/m³)", value: "5.70"},
+      {label: "🇧🇪 Flandern (niedrig: 4,70 €/m³)", value: "4.70"},
+      {label: "🇧🇪 Flandern (hoch: 6,70 €/m³)", value: "6.70"},
+      {label: "🇳🇱 Niederlande (Ø: 2,61 €/m³)", value: "2.61"},
+      {label: "🇩🇪 Deutschland (Ø: 2,00 €/m³)", value: "2.00"},
+      {label: "🇫🇷 Frankreich (Ø: 4,00 €/m³)", value: "4.00"},
+      {label: "🇬🇧 UK (~3,00 £/m³)", value: "3.00"},
+      {label: "🇺🇸 USA (Ø: 1,50 $/m³)", value: "1.50"},
+      {label: "🇨🇳 China (Ø: 3,50 ¥/m³)", value: "3.50"},
+      {label: "🇨🇳 China (Peking: 5,00 ¥/m³)", value: "5.00"},
+      {label: "🇯🇵 Japan (Ø: 200 ¥/m³)", value: "200.00"},
+      {label: "🇮🇳 Indien (Ø: 15 ₹/m³)", value: "15.00"},
+      {label: "🇧🇷 Brasilien (Ø: 5,00 R$/m³)", value: "5.00"},
+      {label: "🇦🇺 Australien (Ø: 3,50 $/m³)", value: "3.50"}
+    ]
+  },
+  es: {
+    appTitle: "💧 Calculadora de Pérdidas de Agua",
+    appSubtitle: "Calcula cuánta agua y dinero pierdes por un grifo que gotea",
+    languageLabel: "Seleccione idioma:",
+    settingsTitle: "⚙️ Configuración",
+    leakTypeLabel: "Tipo de fuga / caudal:",
+    customRateLabel: "Caudal personalizado (litros por hora):",
+    currencyLabel: "Moneda:",
+    priceLabel: "Precio del agua por m³:",
+    presetLabel: "o elige una región:",
+    calculateBtn: "🧮 Calcular",
+    resetBtn: "↺ Reiniciar",
+    resultsTitle: "📊 Resultados",
+    yearlyCostDisplay: "por año",
+    waterLossTitle: "💧 Pérdida de Agua",
+    hourlyLossLabel: "Por hora:",
+    dailyLossLabel: "Por día (24h):",
+    monthlyLossLabel: "Por mes (30 días):",
+    yearlyLossLabel: "Por año:",
+    costsTitle: "💶 Costes",
+    dailyCostLabel: "Por día:",
+    monthlyCostLabel: "Por mes:",
+    yearlyCostLabel: "Por año:",
+    visualTitle: "👀 Eso es aproximadamente...",
+    bottlesText: "botellas de agua (1,5 L)",
+    showersText: "duchas (100 L)",
+    barrelsText: "barriles de lluvia (75 L)",
+    drinkingText: "días de agua potable (1,5 L/día)",
+    repairTip: "<strong>🔧 ¡La reparación vale la pena!</strong> Los costes anteriores son lo que <strong>desperdicias anualmente</strong>. Un fontanero puede reparar un grifo que gotea en menos de una hora. Ese coste único casi siempre es menor que la pérdida anual.",
+    footerText: 'Una herramienta gratuita de <a href="https://magicwhale.eu" target="_blank" rel="noopener">Bleu Magic Whale</a> · Open source · Sin seguimiento',
+    shareBtn: "📤 Compartir resultado",
+    shareText: (y, c, cur) => `💧 ¡Mi grifo que gotea desperdicia ${y} litros de agua al año — eso es ${cur}${c}! Calcula el tuyo:`,
+    leakTypes: [
+      {label: "💧 1 gota por segundo (~1.577 L/año)", value: 1},
+      {label: "💧 10 gotas por minuto (~157 L/año)", value: 3},
+      {label: "💧 4 litros por hora (~35.040 L/año)", value: 2},
+      {label: "💧 Hilo fino de agua (~140.000 L/año)", value: 4},
+      {label: "⚙️ Caudal personalizado", value: "custom"}
+    ],
+    presets: [
+      {label: "— Elige una región —", value: ""},
+      {label: "🇧🇪 Flandes (med: 5,70 €/m³)", value: "5.70"},
+      {label: "🇧🇪 Flandes (bajo: 4,70 €/m³)", value: "4.70"},
+      {label: "🇧🇪 Flandes (alto: 6,70 €/m³)", value: "6.70"},
+      {label: "🇳🇱 Países Bajos (med: 2,61 €/m³)", value: "2.61"},
+      {label: "🇩🇪 Alemania (med: 2,00 €/m³)", value: "2.00"},
+      {label: "🇫🇷 Francia (med: 4,00 €/m³)", value: "4.00"},
+      {label: "🇬🇧 Reino Unido (~3,00 £/m³)", value: "3.00"},
+      {label: "🇺🇸 EE.UU. (med: 1,50 $/m³)", value: "1.50"},
+      {label: "🇨🇳 China (med: 3,50 ¥/m³)", value: "3.50"},
+      {label: "🇨🇳 China (Pekín: 5,00 ¥/m³)", value: "5.00"},
+      {label: "🇯🇵 Japón (med: 200 ¥/m³)", value: "200.00"},
+      {label: "🇮🇳 India (med: 15 ₹/m³)", value: "15.00"},
+      {label: "🇧🇷 Brasil (med: 5,00 R$/m³)", value: "5.00"},
+      {label: "🇦🇺 Australia (med: 3,50 $/m³)", value: "3.50"}
+    ]
+  },
+  it: {
+    appTitle: "💧 Calcolatore di Perdite d'Acqua",
+    appSubtitle: "Calcola quanta acqua e denaro perdi da un rubinetto che gocciola",
+    languageLabel: "Seleziona lingua:",
+    settingsTitle: "⚙️ Impostazioni",
+    leakTypeLabel: "Tipo di perdita / portata:",
+    customRateLabel: "Portata personalizzata (litri all'ora):",
+    currencyLabel: "Valuta:",
+    priceLabel: "Prezzo dell'acqua per m³:",
+    presetLabel: "o scegli una regione:",
+    calculateBtn: "🧮 Calcola",
+    resetBtn: "↺ Reimposta",
+    resultsTitle: "📊 Risultati",
+    yearlyCostDisplay: "all'anno",
+    waterLossTitle: "💧 Perdita d'Acqua",
+    hourlyLossLabel: "All'ora:",
+    dailyLossLabel: "Al giorno (24h):",
+    monthlyLossLabel: "Al mese (30 giorni):",
+    yearlyLossLabel: "All'anno:",
+    costsTitle: "💶 Costi",
+    dailyCostLabel: "Al giorno:",
+    monthlyCostLabel: "Al mese:",
+    yearlyCostLabel: "All'anno:",
+    visualTitle: "👀 Sono circa...",
+    bottlesText: "bottiglie d'acqua (1,5 L)",
+    showersText: "docce (100 L)",
+    barrelsText: "cisterne per pioggia (75 L)",
+    drinkingText: "giorni di acqua potabile (1,5 L/giorno)",
+    repairTip: "<strong>🔧 La riparazione vale la pena!</strong> I costi sopra sono ciò che <strong>sprechi annualmente</strong>. Un idraulico può spesso riparare un rubinetto che gocciola in meno di un'ora. Quel costo una tantum è quasi sempre inferiore alla perdita annuale.",
+    footerText: 'Uno strumento gratuito di <a href="https://magicwhale.eu" target="_blank" rel="noopener">Bleu Magic Whale</a> · Open source · Nessun tracciamento',
+    shareBtn: "📤 Condividi risultato",
+    shareText: (y, c, cur) => `💧 Il mio rubinetto che gocciola spreca ${y} litri d'acqua all'anno — sono ${cur}${c}! Calcola il tuo:`,
+    leakTypes: [
+      {label: "💧 1 goccia al secondo (~1.577 L/anno)", value: 1},
+      {label: "💧 10 gocce al minuto (~157 L/anno)", value: 3},
+      {label: "💧 4 litri all'ora (~35.040 L/anno)", value: 2},
+      {label: "💧 Fil sottile d'acqua (~140.000 L/anno)", value: 4},
+      {label: "⚙️ Portata personalizzata", value: "custom"}
+    ],
+    presets: [
+      {label: "— Scegli una regione —", value: ""},
+      {label: "🇧🇪 Fiandre (med: 5,70 €/m³)", value: "5.70"},
+      {label: "🇧🇪 Fiandre (basso: 4,70 €/m³)", value: "4.70"},
+      {label: "🇧🇪 Fiandre (alto: 6,70 €/m³)", value: "6.70"},
+      {label: "🇳🇱 Paesi Bassi (med: 2,61 €/m³)", value: "2.61"},
+      {label: "🇩🇪 Germania (med: 2,00 €/m³)", value: "2.00"},
+      {label: "🇫🇷 Francia (med: 4,00 €/m³)", value: "4.00"},
+      {label: "🇬🇧 Regno Unito (~3,00 £/m³)", value: "3.00"},
+      {label: "🇺🇸 USA (med: 1,50 $/m³)", value: "1.50"},
+      {label: "🇨🇳 Cina (med: 3,50 ¥/m³)", value: "3.50"},
+      {label: "🇨🇳 Cina (Pechino: 5,00 ¥/m³)", value: "5.00"},
+      {label: "🇯🇵 Giappone (med: 200 ¥/m³)", value: "200.00"},
+      {label: "🇮🇳 India (med: 15 ₹/m³)", value: "15.00"},
+      {label: "🇧🇷 Brasile (med: 5,00 R$/m³)", value: "5.00"},
+      {label: "🇦🇺 Australia (med: 3,50 $/m³)", value: "3.50"}
+    ]
+  },
+  pt: {
+    appTitle: "💧 Calculadora de Vazamentos de Água",
+    appSubtitle: "Calcule quanta água e dinheiro você perde com uma torneira pingando",
+    languageLabel: "Selecione o idioma:",
+    settingsTitle: "⚙️ Configurações",
+    leakTypeLabel: "Tipo de vazamento / vazão:",
+    customRateLabel: "Vazão personalizada (litros por hora):",
+    currencyLabel: "Moeda:",
+    priceLabel: "Preço da água por m³:",
+    presetLabel: "ou escolha uma região:",
+    calculateBtn: "🧮 Calcular",
+    resetBtn: "↺ Redefinir",
+    resultsTitle: "📊 Resultados",
+    yearlyCostDisplay: "por ano",
+    waterLossTitle: "💧 Perda de Água",
+    hourlyLossLabel: "Por hora:",
+    dailyLossLabel: "Por dia (24h):",
+    monthlyLossLabel: "Por mês (30 dias):",
+    yearlyLossLabel: "Por ano:",
+    costsTitle: "💶 Custos",
+    dailyCostLabel: "Por dia:",
+    monthlyCostLabel: "Por mês:",
+    yearlyCostLabel: "Por ano:",
+    visualTitle: "👀 Isso é cerca de...",
+    bottlesText: "garrafas de água (1,5 L)",
+    showersText: "banhos (100 L)",
+    barrelsText: "cisternas de chuva (75 L)",
+    drinkingText: "dias de água potável (1,5 L/dia)",
+    repairTip: "<strong>🔧 O conserto vale a pena!</strong> Os custos acima são o que você <strong>desperdiça anualmente</strong>. Um encanador geralmente conserta uma torneira pingando em menos de uma hora. Esse custo único é quase sempre menor que a perda anual.",
+    footerText: 'Uma ferramenta gratuita da <a href="https://magicwhale.eu" target="_blank" rel="noopener">Bleu Magic Whale</a> · Open source · Sem rastreamento',
+    shareBtn: "📤 Compartilhar resultado",
+    shareText: (y, c, cur) => `💧 Minha torneira pingando desperdiça ${y} litros de água por ano — isso é ${cur}${c}! Calcule a sua:`,
+    leakTypes: [
+      {label: "💧 1 gota por segundo (~1.577 L/ano)", value: 1},
+      {label: "💧 10 gotas por minuto (~157 L/ano)", value: 3},
+      {label: "💧 4 litros por hora (~35.040 L/ano)", value: 2},
+      {label: "💧 Fio fino de água (~140.000 L/ano)", value: 4},
+      {label: "⚙️ Vazão personalizada", value: "custom"}
+    ],
+    presets: [
+      {label: "— Escolha uma região —", value: ""},
+      {label: "🇧🇪 Flandres (méd: 5,70 €/m³)", value: "5.70"},
+      {label: "🇧🇪 Flandres (baixo: 4,70 €/m³)", value: "4.70"},
+      {label: "🇧🇪 Flandres (alto: 6,70 €/m³)", value: "6.70"},
+      {label: "🇳🇱 Países Baixos (méd: 2,61 €/m³)", value: "2.61"},
+      {label: "🇩🇪 Alemanha (méd: 2,00 €/m³)", value: "2.00"},
+      {label: "🇫🇷 França (méd: 4,00 €/m³)", value: "4.00"},
+      {label: "🇬🇧 Reino Unido (~3,00 £/m³)", value: "3.00"},
+      {label: "🇺🇸 EUA (méd: 1,50 $/m³)", value: "1.50"},
+      {label: "🇨🇳 China (méd: 3,50 ¥/m³)", value: "3.50"},
+      {label: "🇨🇳 China (Pequim: 5,00 ¥/m³)", value: "5.00"},
+      {label: "🇯🇵 Japão (méd: 200 ¥/m³)", value: "200.00"},
+      {label: "🇮🇳 Índia (méd: 15 ₹/m³)", value: "15.00"},
+      {label: "🇧🇷 Brasil (méd: 5,00 R$/m³)", value: "5.00"},
+      {label: "🇦🇺 Austrália (méd: 3,50 $/m³)", value: "3.50"}
+    ]
+  },
+  pl: {
+    appTitle: "💧 Kalkulator Wycieków Wody",
+    appSubtitle: "Oblicz, ile wody i pieniędzy tracisz przez cieknący kran",
+    languageLabel: "Wybierz język:",
+    settingsTitle: "⚙️ Ustawienia",
+    leakTypeLabel: "Rodzaj wycieku / przepływ:",
+    customRateLabel: "Niestandardowy przepływ (litry na godzinę):",
+    currencyLabel: "Waluta:",
+    priceLabel: "Cena wody za m³:",
+    presetLabel: "lub wybierz region:",
+    calculateBtn: "🧮 Oblicz",
+    resetBtn: "↺ Resetuj",
+    resultsTitle: "📊 Wyniki",
+    yearlyCostDisplay: "rocznie",
+    waterLossTitle: "💧 Strata Wody",
+    hourlyLossLabel: "Na godzinę:",
+    dailyLossLabel: "Na dzień (24h):",
+    monthlyLossLabel: "Na miesiąc (30 dni):",
+    yearlyLossLabel: "Na rok:",
+    costsTitle: "💶 Koszty",
+    dailyCostLabel: "Na dzień:",
+    monthlyCostLabel: "Na miesiąc:",
+    yearlyCostLabel: "Na rok:",
+    visualTitle: "👀 To około...",
+    bottlesText: "butelek wody (1,5 L)",
+    showersText: "pryszniców (100 L)",
+    barrelsText: "zbiorników na deszcz (75 L)",
+    drinkingText: "dni wody pitnej (1,5 L/dzień)",
+    repairTip: "<strong>🔧 Naprawa się opłaca!</strong> Koszty powyżej to to, co <strong>marnujesz rocznie</strong>. Hydraulik często naprawia cieknący kran w mniej niż godzinę. Ten jednorazowy koszt jest prawie zawsze niższy niż roczna strata.",
+    footerText: 'Darmowe narzędzie od <a href="https://magicwhale.eu" target="_blank" rel="noopener">Bleu Magic Whale</a> · Open source · Bez śledzenia',
+    shareBtn: "📤 Udostępnij wynik",
+    shareText: (y, c, cur) => `💧 Mój cieknący kran marnuje ${y} litrów wody rocznie — to ${cur}${c}! Oblicz swój:`,
+    leakTypes: [
+      {label: "💧 1 kropla na sekundę (~1 577 L/rok)", value: 1},
+      {label: "💧 10 kropli na minutę (~157 L/rok)", value: 3},
+      {label: "💧 4 litry na godzinę (~35 040 L/rok)", value: 2},
+      {label: "💧 Cienki strumień (~140 000 L/rok)", value: 4},
+      {label: "⚙️ Niestandardowy przepływ", value: "custom"}
+    ],
+    presets: [
+      {label: "— Wybierz region —", value: ""},
+      {label: "🇧🇪 Flandria (śr: 5,70 €/m³)", value: "5.70"},
+      {label: "🇧🇪 Flandria (niska: 4,70 €/m³)", value: "4.70"},
+      {label: "🇧🇪 Flandria (wysoka: 6,70 €/m³)", value: "6.70"},
+      {label: "🇳🇱 Holandia (śr: 2,61 €/m³)", value: "2.61"},
+      {label: "🇩🇪 Niemcy (śr: 2,00 €/m³)", value: "2.00"},
+      {label: "🇫🇷 Francja (śr: 4,00 €/m³)", value: "4.00"},
+      {label: "🇬🇧 Wielka Brytania (~3,00 £/m³)", value: "3.00"},
+      {label: "🇺🇸 USA (śr: 1,50 $/m³)", value: "1.50"},
+      {label: "🇨🇳 Chiny (śr: 3,50 ¥/m³)", value: "3.50"},
+      {label: "🇨🇳 Chiny (Pekin: 5,00 ¥/m³)", value: "5.00"},
+      {label: "🇯🇵 Japonia (śr: 200 ¥/m³)", value: "200.00"},
+      {label: "🇮🇳 Indie (śr: 15 ₹/m³)", value: "15.00"},
+      {label: "🇧🇷 Brazylia (śr: 5,00 R$/m³)", value: "5.00"},
+      {label: "🇦🇺 Australia (śr: 3,50 $/m³)", value: "3.50"}
+    ]
+  },
+  sv: {
+    appTitle: "💧 Kalkylator för Vattenläckage",
+    appSubtitle: "Beräkna hur mycket vatten och pengar du förlorar från en läckande kran",
+    languageLabel: "Välj språk:",
+    settingsTitle: "⚙️ Inställningar",
+    leakTypeLabel: "Läckagetyp / flöde:",
+    customRateLabel: "Anpassat flöde (liter per timme):",
+    currencyLabel: "Valuta:",
+    priceLabel: "Vattenpris per m³:",
+    presetLabel: "eller välj en region:",
+    calculateBtn: "🧮 Beräkna",
+    resetBtn: "↺ Återställ",
+    resultsTitle: "📊 Resultat",
+    yearlyCostDisplay: "per år",
+    waterLossTitle: "💧 Vattenförlust",
+    hourlyLossLabel: "Per timme:",
+    dailyLossLabel: "Per dag (24h):",
+    monthlyLossLabel: "Per månad (30 dagar):",
+    yearlyLossLabel: "Per år:",
+    costsTitle: "💶 Kostnader",
+    dailyCostLabel: "Per dag:",
+    monthlyCostLabel: "Per månad:",
+    yearlyCostLabel: "Per år:",
+    visualTitle: "👀 Det är ungefär...",
+    bottlesText: "vattenflaskor (1,5 L)",
+    showersText: "duschar (100 L)",
+    barrelsText: "regntunnor (75 L)",
+    drinkingText: "dagar dricksvatten (1,5 L/dag)",
+    repairTip: "<strong>🔧 Reparation lönar sig!</strong> Kostnaderna ovan är vad du <strong>slösar årligen</strong>. En rörmokare kan ofta fixa en läckande kran på mindre än en timme. Den engångskostnaden är nästan alltid lägre än den årliga förlusten.",
+    footerText: 'Ett gratis verktyg från <a href="https://magicwhale.eu" target="_blank" rel="noopener">Bleu Magic Whale</a> · Open source · Ingen spårning',
+    shareBtn: "📤 Dela resultatet",
+    shareText: (y, c, cur) => `💧 Min läckande kran slösar ${y} liter vatten per år — det är ${cur}${c}! Beräkna din:`,
+    leakTypes: [
+      {label: "💧 1 droppe per sekund (~1 577 L/år)", value: 1},
+      {label: "💧 10 droppar per minut (~157 L/år)", value: 3},
+      {label: "💧 4 liter per timme (~35 040 L/år)", value: 2},
+      {label: "💧 Tunn vattenstråle (~140 000 L/år)", value: 4},
+      {label: "⚙️ Anpassat flöde", value: "custom"}
+    ],
+    presets: [
+      {label: "— Välj en region —", value: ""},
+      {label: "🇧🇪 Flandern (snitt: 5,70 €/m³)", value: "5.70"},
+      {label: "🇧🇪 Flandern (låg: 4,70 €/m³)", value: "4.70"},
+      {label: "🇧🇪 Flandern (hög: 6,70 €/m³)", value: "6.70"},
+      {label: "🇳🇱 Nederländerna (snitt: 2,61 €/m³)", value: "2.61"},
+      {label: "🇩🇪 Tyskland (snitt: 2,00 €/m³)", value: "2.00"},
+      {label: "🇫🇷 Frankrike (snitt: 4,00 €/m³)", value: "4.00"},
+      {label: "🇬🇧 Storbritannien (~3,00 £/m³)", value: "3.00"},
+      {label: "🇺🇸 USA (snitt: 1,50 $/m³)", value: "1.50"},
+      {label: "🇨🇳 Kina (snitt: 3,50 ¥/m³)", value: "3.50"},
+      {label: "🇨🇳 Kina (Peking: 5,00 ¥/m³)", value: "5.00"},
+      {label: "🇯🇵 Japan (snitt: 200 ¥/m³)", value: "200.00"},
+      {label: "🇮🇳 Indien (snitt: 15 ₹/m³)", value: "15.00"},
+      {label: "🇧🇷 Brasilien (snitt: 5,00 R$/m³)", value: "5.00"},
+      {label: "🇦🇺 Australien (snitt: 3,50 $/m³)", value: "3.50"}
+    ]
+  },
+  ru: {
+    appTitle: "💧 Калькулятор утечек воды",
+    appSubtitle: "Рассчитайте потерю воды и денег из-за протекающего крана",
+    languageLabel: "Выберите язык:",
+    settingsTitle: "⚙️ Настройки",
+    leakTypeLabel: "Тип утечки / поток:",
+    customRateLabel: "Свой поток (литров в час):",
+    currencyLabel: "Валюта:",
+    priceLabel: "Цена воды за м³:",
+    presetLabel: "или выберите регион:",
+    calculateBtn: "🧮 Рассчитать",
+    resetBtn: "↺ Сбросить",
+    resultsTitle: "📊 Результаты",
+    yearlyCostDisplay: "в год",
+    waterLossTitle: "💧 Потеря воды",
+    hourlyLossLabel: "В час:",
+    dailyLossLabel: "В день (24ч):",
+    monthlyLossLabel: "В месяц (30 дней):",
+    yearlyLossLabel: "В год:",
+    costsTitle: "💶 Расходы",
+    dailyCostLabel: "В день:",
+    monthlyCostLabel: "В месяц:",
+    yearlyCostLabel: "В год:",
+    visualTitle: "👀 Это примерно...",
+    bottlesText: "бутылок воды (1,5 л)",
+    showersText: "душевых (100 л)",
+    barrelsText: "бочек для дождя (75 л)",
+    drinkingText: "дней питьевой воды (1,5 л/день)",
+    repairTip: "<strong>🔧 Ремонт окупается!</strong> Расходы выше — это то, что вы <strong>теряете ежегодно</strong>. Сантехник часто может починить протекающий кран менее чем за час. Эти разовые затраты почти всегда ниже годовых потерь.",
+    footerText: 'Бесплатный инструмент от <a href="https://magicwhale.eu" target="_blank" rel="noopener">Bleu Magic Whale</a> · Открытый код · Без отслеживания',
+    shareBtn: "📤 Поделиться",
+    shareText: (y, c, cur) => `💧 Мой протекающий кран тратит ${y} литров воды в год — это ${cur}${c}! Рассчитайте свой:`,
+    leakTypes: [
+      {label: "💧 1 капля/сек (~1 577 л/год)", value: 1},
+      {label: "💧 10 капель/мин (~157 л/год)", value: 3},
+      {label: "💧 4 л/час (~35 040 л/год)", value: 2},
+      {label: "💧 Тонкая струя (~140 000 л/год)", value: 4},
+      {label: "⚙️ Свой поток", value: "custom"}
+    ],
+    presets: [
+      {label: "— Выберите регион —", value: ""},
+      {label: "🇧🇪 Фландрия (ср: 5,70 €/м³)", value: "5.70"},
+      {label: "🇳🇱 Нидерланды (ср: 2,61 €/м³)", value: "2.61"},
+      {label: "🇩🇪 Германия (ср: 2,00 €/m³)", value: "2.00"},
+      {label: "🇫🇷 Франция (ср: 4,00 €/м³)", value: "4.00"},
+      {label: "🇬🇧 Великобритания (~3,00 £/м³)", value: "3.00"},
+      {label: "🇺🇸 США (ср: 1,50 $/м³)", value: "1.50"},
+      {label: "🇨🇳 Китай (ср: 3,50 ¥/м³)", value: "3.50"},
+      {label: "🇨🇳 Китай (Пекин: 5,00 ¥/м³)", value: "5.00"},
+      {label: "🇯🇵 Япония (ср: 200 ¥/м³)", value: "200.00"},
+      {label: "🇮🇳 Индия (ср: 15 ₹/м³)", value: "15.00"},
+      {label: "🇧🇷 Бразилия (ср: 5,00 R$/м³)", value: "5.00"},
+      {label: "🇦🇺 Австралия (ср: 3,50 $/м³)", value: "3.50"}
+    ]
+  },
+  zh: {
+    appTitle: "💧 漏水计算器",
+    appSubtitle: "计算因水龙头漏水而损失的水量和金钱",
+    languageLabel: "选择语言：",
+    settingsTitle: "⚙️ 设置",
+    leakTypeLabel: "漏水类型 / 流速：",
+    customRateLabel: "自定义流速（升/小时）：",
+    currencyLabel: "货币：",
+    priceLabel: "每立方米水价：",
+    presetLabel: "或选择地区：",
+    calculateBtn: "🧮 计算",
+    resetBtn: "↺ 重置",
+    resultsTitle: "📊 结果",
+    yearlyCostDisplay: "每年",
+    waterLossTitle: "💧 水损失",
+    hourlyLossLabel: "每小时：",
+    dailyLossLabel: "每天（24小时）：",
+    monthlyLossLabel: "每月（30天）：",
+    yearlyLossLabel: "每年：",
+    costsTitle: "💶 费用",
+    dailyCostLabel: "每天：",
+    monthlyCostLabel: "每月：",
+    yearlyCostLabel: "每年：",
+    visualTitle: "👀 大约相当于...",
+    bottlesText: "瓶水（1.5 升）",
+    showersText: "次淋浴（100 升）",
+    barrelsText: "个雨水桶（75 升）",
+    drinkingText: "天的饮用水（1.5 升/天）",
+    repairTip: "<strong>🔧 修理是值得的！</strong> 上面的费用是您<strong>每年浪费的金额</strong>。水管工通常可以在不到一小时内修好漏水的水龙头。这笔一次性费用几乎总是低于年度损失。",
+    footerText: '由 <a href="https://magicwhale.eu" target="_blank" rel="noopener">Bleu Magic Whale</a> 提供的免费工具 · 开源 · 无跟踪',
+    shareBtn: "📤 分享结果",
+    shareText: (y, c, cur) => `💧 我的漏水水龙头每年浪费 ${y} 升水——相当于 ${cur}${c}！计算您的：`,
+    leakTypes: [
+      {label: "💧 每秒 1 滴（约 1,577 升/年）", value: 1},
+      {label: "💧 每分钟 10 滴（约 157 升/年）", value: 3},
+      {label: "💧 每小时 4 升（约 35,040 升/年）", value: 2},
+      {label: "💧 细水流（约 140,000 升/年）", value: 4},
+      {label: "⚙️ 自定义流速", value: "custom"}
+    ],
+    presets: [
+      {label: "— 选择地区 —", value: ""},
+      {label: "🇨🇳 中国（平均：3.50 ¥/m³）", value: "3.50"},
+      {label: "🇨🇳 中国（北京：5.00 ¥/m³）", value: "5.00"},
+      {label: "🇨🇳 中国（上海：4.00 ¥/m³）", value: "4.00"},
+      {label: "🇧🇪 法兰德斯（平均：5.70 €/m³）", value: "5.70"},
+      {label: "🇳🇱 荷兰（平均：2.61 €/m³）", value: "2.61"},
+      {label: "🇩🇪 德国（平均：2.00 €/m³）", value: "2.00"},
+      {label: "🇫🇷 法国（平均：4.00 €/m³）", value: "4.00"},
+      {label: "🇬🇧 英国（约 3.00 £/m³）", value: "3.00"},
+      {label: "🇺🇸 美国（平均：1.50 $/m³）", value: "1.50"},
+      {label: "🇯🇵 日本（平均：200 ¥/m³）", value: "200.00"},
+      {label: "🇮🇳 印度（平均：15 ₹/m³）", value: "15.00"},
+      {label: "🇧🇷 巴西（平均：5.00 R$/m³)", value: "5.00"},
+      {label: "🇦🇺 澳大利亚（平均：3.50 $/m³）", value: "3.50"}
+    ]
+  },
+  ja: {
+    appTitle: "💧 水漏れ計算機",
+    appSubtitle: "蛇口の水漏れによる水とお金の損失を計算",
+    languageLabel: "言語を選択：",
+    settingsTitle: "⚙️ 設定",
+    leakTypeLabel: "漏れの種類 / 流量：",
+    customRateLabel: "カスタム流量（リットル/時）：",
+    currencyLabel: "通貨：",
+    priceLabel: "m³あたりの水価格：",
+    presetLabel: "または地域を選択：",
+    calculateBtn: "🧮 計算",
+    resetBtn: "↺ リセット",
+    resultsTitle: "📊 結果",
+    yearlyCostDisplay: "年間",
+    waterLossTitle: "💧 水の損失",
+    hourlyLossLabel: "1時間あたり：",
+    dailyLossLabel: "1日あたり（24時間）：",
+    monthlyLossLabel: "1か月あたり（30日）：",
+    yearlyLossLabel: "1年あたり：",
+    costsTitle: "💶 コスト",
+    dailyCostLabel: "1日あたり：",
+    monthlyCostLabel: "1か月あたり：",
+    yearlyCostLabel: "1年あたり：",
+    visualTitle: "👀 およそ...",
+    bottlesText: "本の水（1.5 L）",
+    showersText: "回のシャワー（100 L）",
+    barrelsText: "個の雨水タンク（75 L）",
+    drinkingText: "日分の飲料水（1.5 L/日）",
+    repairTip: "<strong>🔧 修理する価値があります！</strong> 上記のコストは<strong>年間で無駄にしている金額</strong>です。配管工は通常1時間以内に漏れている蛇口を修理できます。この一時的な費用は、ほとんどの場合、年間損失よりも低くなります。",
+    footerText: '<a href="https://magicwhale.eu" target="_blank" rel="noopener">Bleu Magic Whale</a> の無料ツール · オープンソース · トラッキングなし',
+    shareBtn: "📤 結果を共有",
+    shareText: (y, c, cur) => `💧 私の漏れている蛇口は年間 ${y} リットルの水を無駄にしています — ${cur}${c} です！あなたのも計算：`,
+    leakTypes: [
+      {label: "💧 1秒に1滴（約1,577 L/年）", value: 1},
+      {label: "💧 1分に10滴（約157 L/年）", value: 3},
+      {label: "💧 1時間に4リットル（約35,040 L/年）", value: 2},
+      {label: "💧 細い水流（約140,000 L/年）", value: 4},
+      {label: "⚙️ カスタム流量", value: "custom"}
+    ],
+    presets: [
+      {label: "— 地域を選択 —", value: ""},
+      {label: "🇨🇳 中国（平均：3.50 ¥/m³）", value: "3.50"},
+      {label: "🇨🇳 中国（北京：5.00 ¥/m³）", value: "5.00"},
+      {label: "🇧🇪 フランドル（平均：5.70 €/m³）", value: "5.70"},
+      {label: "🇳🇱 オランダ（平均：2.61 €/m³）", value: "2.61"},
+      {label: "🇩🇪 ドイツ（平均：2.00 €/m³）", value: "2.00"},
+      {label: "🇫🇷 フランス（平均：4.00 €/m³）", value: "4.00"},
+      {label: "🇬🇧 イギリス（約3.00 £/m³）", value: "3.00"},
+      {label: "🇺🇸 アメリカ（平均：1.50 $/m³）", value: "1.50"},
+      {label: "🇯🇵 日本（平均：200 ¥/m³）", value: "200.00"},
+      {label: "🇮🇳 インド（平均：15 ₹/m³）", value: "15.00"},
+      {label: "🇧🇷 ブラジル（平均：5.00 R$/m³）", value: "5.00"},
+      {label: "🇦🇺 オーストラリア（平均：3.50 $/m³）", value: "3.50"}
+    ]
+  },
+  ar: {
+    appTitle: "💧 حاسبة تسرب المياه",
+    appSubtitle: "احسب كمية المياه والمال التي تخسرها بسبب صنبور متسرب",
+    languageLabel: "اختر اللغة:",
+    settingsTitle: "⚙️ الإعدادات",
+    leakTypeLabel: "نوع التسرب / معدل التدفق:",
+    customRateLabel: "معدل تدفق مخصص (لتر/ساعة):",
+    currencyLabel: "العملة:",
+    priceLabel: "سعر الماء لكل متر مكعب:",
+    presetLabel: "أو اختر منطقة:",
+    calculateBtn: "🧮 احسب",
+    resetBtn: "↺ إعادة تعيين",
+    resultsTitle: "📊 النتائج",
+    yearlyCostDisplay: "سنويًا",
+    waterLossTitle: "💧 فقدان المياه",
+    hourlyLossLabel: "في الساعة:",
+    dailyLossLabel: "في اليوم (24 ساعة):",
+    monthlyLossLabel: "في الشهر (30 يومًا):",
+    yearlyLossLabel: "في السنة:",
+    costsTitle: "💶 التكاليف",
+    dailyCostLabel: "في اليوم:",
+    monthlyCostLabel: "في الشهر:",
+    yearlyCostLabel: "في السنة:",
+    visualTitle: "👀 هذا حوالي...",
+    bottlesText: "زجاجة ماء (1.5 لتر)",
+    showersText: "دش (100 لتر)",
+    barrelsText: "برميل مطر (75 لتر)",
+    drinkingText: "يوم من مياه الشرب (1.5 لتر/يوم)",
+    repairTip: "<strong>🔧 الإصلاح يستحق ذلك!</strong> التكاليف أعلاه هي ما <strong>تهدره سنويًا</strong>. يمكن للسباك غالبًا إصلاح صنبور متسرب في أقل من ساعة. هذه التكلفة لمرة واحدة أقل دائمًا تقريبًا من الخسارة السنوية.",
+    footerText: 'أداة مجانية من <a href="https://magicwhale.eu" target="_blank" rel="noopener">Bleu Magic Whale</a> · مفتوح المصدر · بدون تتبع',
+    shareBtn: "📤 شارك النتيجة",
+    shareText: (y, c, cur) => `💧 صنبوري المتسرب يهدر ${y} لتر من الماء سنويًا — أي ${cur}${c}! احسب نتيجتك:`,
+    leakTypes: [
+      {label: "💧 قطرة واحدة في الثانية (~1,577 لتر/سنة)", value: 1},
+      {label: "💧 10 قطرات في الدقيقة (~157 لتر/سنة)", value: 3},
+      {label: "💧 4 لترات في الساعة (~35,040 لتر/سنة)", value: 2},
+      {label: "💧 تيار رفيع (~140,000 لتر/سنة)", value: 4},
+      {label: "⚙️ معدل تدفق مخصص", value: "custom"}
+    ],
+    presets: [
+      {label: "— اختر منطقة —", value: ""},
+      {label: "🇨🇳 الصين (متوسط: 3.50 ¥/m³)", value: "3.50"},
+      {label: "🇨🇳 الصين (بكين: 5.00 ¥/m³)", value: "5.00"},
+      {label: "🇧🇪 فلاندرز (متوسط: 5.70 €/m³)", value: "5.70"},
+      {label: "🇳🇱 هولندا (متوسط: 2.61 €/m³)", value: "2.61"},
+      {label: "🇩🇪 ألمانيا (متوسط: 2.00 €/m³)", value: "2.00"},
+      {label: "🇫🇷 فرنسا (متوسط: 4.00 €/m³)", value: "4.00"},
+      {label: "🇬🇧 المملكة المتحدة (~3.00 £/m³)", value: "3.00"},
+      {label: "🇺🇸 الولايات المتحدة (متوسط: 1.50 $/m³)", value: "1.50"},
+      {label: "🇯🇵 اليابان (متوسط: 200 ¥/m³)", value: "200.00"},
+      {label: "🇮🇳 الهند (متوسط: 15 ₹/m³)", value: "15.00"},
+      {label: "🇧🇷 البرازيل (متوسط: 5.00 R$/m³)", value: "5.00"},
+      {label: "🇦🇺 أستراليا (متوسط: 3.50 $/m³)", value: "3.50"}
+    ]
+  },
+  he: {
+    appTitle: "💧 מחשבון דליפת מים",
+    appSubtitle: "חשב כמה מים וכסף אתה מאבד מברז דולף",
+    languageLabel: "בחר שפה:",
+    settingsTitle: "⚙️ הגדרות",
+    leakTypeLabel: "סוג דליפה / קצב זרימה:",
+    customRateLabel: "קצב זרימה מותאם (ליטר לשעה):",
+    currencyLabel: "מטבע:",
+    priceLabel: "מחיר מים למ״ק:",
+    presetLabel: "או בחר אזור:",
+    calculateBtn: "🧮 חשב",
+    resetBtn: "↺ אפס",
+    resultsTitle: "📊 תוצאות",
+    yearlyCostDisplay: "בשנה",
+    waterLossTitle: "💧 אובדן מים",
+    hourlyLossLabel: "לשעה:",
+    dailyLossLabel: "ליום (24 שעות):",
+    monthlyLossLabel: "לחודש (30 ימים):",
+    yearlyLossLabel: "לשנה:",
+    costsTitle: "💶 עלויות",
+    dailyCostLabel: "ליום:",
+    monthlyCostLabel: "לחודש:",
+    yearlyCostLabel: "לשנה:",
+    visualTitle: "👀 זה בערך...",
+    bottlesText: "בקבוקי מים (1.5 ליטר)",
+    showersText: "מקלחות (100 ליטר)",
+    barrelsText: "חביות גשם (75 ליטר)",
+    drinkingText: "ימי מי שתייה (1.5 ליטר/יום)",
+    repairTip: "<strong>🔧 התיקון משתלם!</strong> העלויות שלמעלה הן מה שאתה <strong>מבזבז מדי שנה</strong>. שרברב יכול לרוב לתקן ברז דולף בפחות משעה. עלות חד-פעמית זו כמעט תמיד נמוכה מההפסד השנתי.",
+    footerText: 'כלי חינמי מאת <a href="https://magicwhale.eu" target="_blank" rel="noopener">Bleu Magic Whale</a> · קוד פתוח · ללא מעקב',
+    shareBtn: "📤 שתף תוצאה",
+    shareText: (y, c, cur) => `💧 הברז הדולף שלי מבזבז ${y} ליטר מים בשנה — זה ${cur}${c}! חשב את שלך:`,
+    leakTypes: [
+      {label: "💧 טיפה אחת לשנייה (~1,577 ליטר/שנה)", value: 1},
+      {label: "💧 10 טיפות לדקה (~157 ליטר/שנה)", value: 3},
+      {label: "💧 4 ליטר לשעה (~35,040 ליטר/שנה)", value: 2},
+      {label: "💧 זרם דק (~140,000 ליטר/שנה)", value: 4},
+      {label: "⚙️ קצב זרימה מותאם", value: "custom"}
+    ],
+    presets: [
+      {label: "— בחר אזור —", value: ""},
+      {label: "🇨🇳 סין (ממוצע: 3.50 ¥/m³)", value: "3.50"},
+      {label: "🇨🇳 סין (בייג'ינג: 5.00 ¥/m³)", value: "5.00"},
+      {label: "🇧🇪 פלנדריה (ממוצע: 5.70 €/m³)", value: "5.70"},
+      {label: "🇳🇱 הולנד (ממוצע: 2.61 €/m³)", value: "2.61"},
+      {label: "🇩🇪 גרמניה (ממוצע: 2.00 €/m³)", value: "2.00"},
+      {label: "🇫🇷 צרפת (ממוצע: 4.00 €/m³)", value: "4.00"},
+      {label: "🇬🇧 בריטניה (~3.00 £/m³)", value: "3.00"},
+      {label: "🇺🇸 ארה״ב (ממוצע: 1.50 $/m³)", value: "1.50"},
+      {label: "🇯🇵 יפן (ממוצע: 200 ¥/m³)", value: "200.00"},
+      {label: "🇮🇳 הודו (ממוצע: 15 ₹/m³)", value: "15.00"},
+      {label: "🇧🇷 ברזיל (ממוצע: 5.00 R$/m³)", value: "5.00"},
+      {label: "🇦🇺 אוסטרליה (ממוצע: 3.50 $/m³)", value: "3.50"}
+    ]
+  },
+  tr: {
+    appTitle: "💧 Su Kaçağı Hesaplayıcı",
+    appSubtitle: "Damlatan bir musluktan ne kadar su ve para kaybettiğinizi hesaplayın",
+    languageLabel: "Dil seçin:",
+    settingsTitle: "⚙️ Ayarlar",
+    leakTypeLabel: "Kaçak tipi / akış hızı:",
+    customRateLabel: "Özel akış hızı (litre/saat):",
+    currencyLabel: "Para birimi:",
+    priceLabel: "m³ başına su fiyatı:",
+    presetLabel: "veya bir bölge seçin:",
+    calculateBtn: "🧮 Hesapla",
+    resetBtn: "↺ Sıfırla",
+    resultsTitle: "📊 Sonuçlar",
+    yearlyCostDisplay: "yılda",
+    waterLossTitle: "💧 Su Kaybı",
+    hourlyLossLabel: "Saatte:",
+    dailyLossLabel: "Günde (24s):",
+    monthlyLossLabel: "Ayda (30 gün):",
+    yearlyLossLabel: "Yılda:",
+    costsTitle: "💶 Maliyetler",
+    dailyCostLabel: "Günde:",
+    monthlyCostLabel: "Ayda:",
+    yearlyCostLabel: "Yılda:",
+    visualTitle: "👀 Bu yaklaşık...",
+    bottlesText: "şişe su (1,5 L)",
+    showersText: "duş (100 L)",
+    barrelsText: "yağmur varili (75 L)",
+    drinkingText: "günlük içme suyu (1,5 L/gün)",
+    repairTip: "<strong>🔧 Tamir etmeye değer!</strong> Yukarıdaki maliyetler <strong>yıllık israfınızdır</strong>. Bir tesisatçı damlatan bir musluğu genellikle bir saatten kısa sürede tamir edebilir. Bu tek seferlik maliyet neredeyse her zaman yıllık kayıptan düşüktür.",
+    footerText: '<a href="https://magicwhale.eu" target="_blank" rel="noopener">Bleu Magic Whale</a> tarafından ücretsiz bir araç · Açık kaynak · İzleme yok',
+    shareBtn: "📤 Sonucu paylaş",
+    shareText: (y, c, cur) => `💧 Damlatan musluğum yılda ${y} litre su israf ediyor — bu ${cur}${c}! Kendininkini hesapla:`,
+    leakTypes: [
+      {label: "💧 Saniyede 1 damla (~1.577 L/yıl)", value: 1},
+      {label: "💧 Dakikada 10 damla (~157 L/yıl)", value: 3},
+      {label: "💧 Saatte 4 litre (~35.040 L/yıl)", value: 2},
+      {label: "💧 İnce su akışı (~140.000 L/yıl)", value: 4},
+      {label: "⚙️ Özel akış hızı", value: "custom"}
+    ],
+    presets: [
+      {label: "— Bir bölge seçin —", value: ""},
+      {label: "🇨🇳 Çin (ort: 3,50 ¥/m³)", value: "3.50"},
+      {label: "🇨🇳 Çin (Pekin: 5,00 ¥/m³)", value: "5.00"},
+      {label: "🇧🇪 Flanders (ort: 5,70 €/m³)", value: "5.70"},
+      {label: "🇳🇱 Hollanda (ort: 2,61 €/m³)", value: "2.61"},
+      {label: "🇩🇪 Almanya (ort: 2,00 €/m³)", value: "2.00"},
+      {label: "🇫🇷 Fransa (ort: 4,00 €/m³)", value: "4.00"},
+      {label: "🇬🇧 Birleşik Krallık (~3,00 £/m³)", value: "3.00"},
+      {label: "🇺🇸 ABD (ort: 1,50 $/m³)", value: "1.50"},
+      {label: "🇯🇵 Japonya (ort: 200 ¥/m³)", value: "200.00"},
+      {label: "🇮🇳 Hindistan (ort: 15 ₹/m³)", value: "15.00"},
+      {label: "🇧🇷 Brezilya (ort: 5,00 R$/m³)", value: "5.00"},
+      {label: "🇦🇺 Avustralya (ort: 3,50 $/m³)", value: "3.50"}
+    ]
+  }
+};
+
+// ============================================================
+// STATE
+// ============================================================
+let currentLanguage = 'en';
+
+// ============================================================
+// DOM
+// ============================================================
+const $ = id => document.getElementById(id);
+
+const els = {
+  languageSelect: $('languageSelect'),
+  appTitle: $('app-title'),
+  appSubtitle: $('app-subtitle'),
+  languageLabel: $('language-label'),
+  settingsTitle: $('settings-title'),
+  leakTypeLabel: $('leak-type-label'),
+  customRateLabel: $('custom-rate-label'),
+  currencyLabel: $('currency-label'),
+  priceLabel: $('price-label'),
+  presetLabel: $('preset-label'),
+  calculateBtn: $('calculateBtn'),
+  resetBtn: $('resetBtn'),
+  resultsTitle: $('results-title'),
+  yearlyCostDisplay: $('yearlyCostDisplay'),
+  waterLossTitle: $('water-loss-title'),
+  hourlyLossLabel: $('hourly-loss-label'),
+  dailyLossLabel: $('daily-loss-label'),
+  monthlyLossLabel: $('monthly-loss-label'),
+  yearlyLossLabel: $('yearly-loss-label'),
+  costsTitle: $('costs-title'),
+  dailyCostLabel: $('daily-cost-label'),
+  monthlyCostLabel: $('monthly-cost-label'),
+  yearlyCostLabel: $('yearly-cost-label'),
+  visualTitle: $('visual-title'),
+  visualBottles: $('visual-bottles'),
+  visualShowers: $('visual-showers'),
+  visualBarrels: $('visual-barrels'),
+  visualDrinking: $('visual-drinking'),
+  repairTip: $('repair-tip'),
+  footerText: $('footer-text'),
+  shareBtn: $('shareBtn'),
+  leakType: $('leakType'),
+  customLeakRate: $('customLeakRate'),
+  customRate: $('customRate'),
+  currency: $('currency'),
+  pricePerM3: $('pricePerM3'),
+  regionPreset: $('regionPreset'),
+  hourlyLoss: $('hourlyLoss'),
+  dailyLoss: $('dailyLoss'),
+  monthlyLoss: $('monthlyLoss'),
+  yearlyLoss: $('yearlyLoss'),
+  dailyCost: $('dailyCost'),
+  monthlyCost: $('monthlyCost'),
+  yearlyCost: $('yearlyCost')
+};
+
+// ============================================================
+// INIT
+// ============================================================
+function init() {
+  els.languageSelect.value = currentLanguage;
+  updateLanguage(currentLanguage);
+
+  els.languageSelect.addEventListener('change', e => {
+    currentLanguage = e.target.value;
+    updateLanguage(currentLanguage);
+    calculate();
+  });
+
+  els.leakType.addEventListener('change', e => {
+    if (e.target.value === 'custom') {
+      els.customLeakRate.classList.remove('hidden');
+    } else {
+      els.customLeakRate.classList.add('hidden');
+    }
+    calculate();
+  });
+
+  els.customRate.addEventListener('input', calculate);
+  els.currency.addEventListener('change', calculate);
+
+  els.pricePerM3.addEventListener('input', () => {
+    els.regionPreset.value = '';
+    calculate();
+  });
+
+  els.regionPreset.addEventListener('change', e => {
+    if (e.target.value) {
+      els.pricePerM3.value = e.target.value;
+      calculate();
+    }
+  });
+
+  els.calculateBtn.addEventListener('click', calculate);
+  els.resetBtn.addEventListener('click', reset);
+  els.shareBtn.addEventListener('click', share);
+
+  calculate();
+}
+
+function updateLanguage(lang) {
+  const t = translations[lang];
+  if (!t) return;
+
+  document.documentElement.lang = lang;
+  document.documentElement.dir = (lang === 'ar' || lang === 'he') ? 'rtl' : 'ltr';
+
+  document.title = t.appTitle + ' | Bleu Magic Whale';
+  els.appTitle.textContent = t.appTitle;
+  els.appSubtitle.textContent = t.appSubtitle;
+  els.languageLabel.textContent = t.languageLabel;
+  els.settingsTitle.textContent = t.settingsTitle;
+  els.leakTypeLabel.textContent = t.leakTypeLabel;
+  els.customRateLabel.textContent = t.customRateLabel;
+  els.currencyLabel.textContent = t.currencyLabel;
+  els.priceLabel.textContent = t.priceLabel;
+  els.presetLabel.textContent = t.presetLabel;
+  els.calculateBtn.textContent = t.calculateBtn;
+  els.resetBtn.textContent = t.resetBtn;
+  els.resultsTitle.textContent = t.resultsTitle;
+  els.waterLossTitle.textContent = t.waterLossTitle;
+  els.hourlyLossLabel.textContent = t.hourlyLossLabel;
+  els.dailyLossLabel.textContent = t.dailyLossLabel;
+  els.monthlyLossLabel.textContent = t.monthlyLossLabel;
+  els.yearlyLossLabel.textContent = t.yearlyLossLabel;
+  els.costsTitle.textContent = t.costsTitle;
+  els.dailyCostLabel.textContent = t.dailyCostLabel;
+  els.monthlyCostLabel.textContent = t.monthlyCostLabel;
+  els.yearlyCostLabel.textContent = t.yearlyCostLabel;
+  els.visualTitle.textContent = t.visualTitle;
+  els.repairTip.innerHTML = t.repairTip;
+  els.footerText.innerHTML = t.footerText;
+  els.shareBtn.textContent = t.shareBtn;
+
+  fillSelect(els.leakType, t.leakTypes);
+  fillSelect(els.regionPreset, t.presets);
+}
+
+function fillSelect(select, options) {
+  const currentValue = select.value;
+  select.innerHTML = '';
+  options.forEach(opt => {
+    const o = document.createElement('option');
+    o.value = opt.value;
+    o.textContent = opt.label;
+    select.appendChild(o);
+  });
+  if ([...select.options].some(o => o.value === currentValue)) {
+    select.value = currentValue;
+  }
+}
+
+function getLitersPerHour() {
+  const v = els.leakType.value;
+  switch(v) {
+    case '1': return 0.18;
+    case '3': return 0.018;
+    case '2': return 4;
+    case '4': return 16;
+    case 'custom': return parseFloat(els.customRate.value) || 0;
+    default: return 4;
+  }
+}
+
+function getPrice() {
+  return parseFloat(els.pricePerM3.value) || 0;
+}
+
+function calculate() {
+  const litersPerHour = getLitersPerHour();
+  const pricePerM3 = getPrice();
+  const currency = els.currency.value;
+  const lang = currentLanguage;
+
+  const litersPerDay = litersPerHour * 24;
+  const litersPerMonth = litersPerDay * 30;
+  const litersPerYear = litersPerDay * 365;
+
+  const costPerDay = (litersPerDay / 1000) * pricePerM3;
+  const costPerMonth = (litersPerMonth / 1000) * pricePerM3;
+  const costPerYear = (litersPerYear / 1000) * pricePerM3;
+
+  const fmt = n => n.toLocaleString(lang, {maximumFractionDigits: 0});
+  const fmt2 = n => n.toLocaleString(lang, {minimumFractionDigits: 2, maximumFractionDigits: 2});
+
+  els.hourlyLoss.textContent = fmt2(litersPerHour) + ' L';
+  els.dailyLoss.textContent = fmt2(litersPerDay) + ' L';
+  els.monthlyLoss.textContent = fmt(litersPerMonth) + ' L';
+  els.yearlyLoss.textContent = fmt(litersPerYear) + ' L';
+
+  els.dailyCost.textContent = currency + fmt2(costPerDay);
+  els.monthlyCost.textContent = currency + fmt2(costPerMonth);
+  els.yearlyCost.textContent = currency + fmt2(costPerYear);
+
+  const t = translations[lang];
+  els.yearlyCostDisplay.textContent = currency + fmt2(costPerYear) + ' ' + t.yearlyCostDisplay;
+
+  const bottles = Math.round(litersPerYear / 1.5);
+  const showers = Math.round(litersPerYear / 100);
+  const barrels = Math.round(litersPerYear / 75);
+  const drinking = Math.round(litersPerYear / 1.5);
+
+  els.visualBottles.textContent = fmt(bottles) + ' ' + t.bottlesText;
+  els.visualShowers.textContent = fmt(showers) + ' ' + t.showersText;
+  els.visualBarrels.textContent = fmt(barrels) + ' ' + t.barrelsText;
+  els.visualDrinking.textContent = fmt(drinking) + ' ' + t.drinkingText;
+}
+
+function reset() {
+  els.leakType.value = '1';
+  els.customRate.value = '4';
+  els.customLeakRate.classList.add('hidden');
+  els.currency.value = '€';
+  els.pricePerM3.value = '5.70';
+  els.regionPreset.value = '';
+  calculate();
+}
+
+async function share() {
+  const litersPerYear = Math.round(getLitersPerHour() * 24 * 365);
+  const costPerYear = ((litersPerYear / 1000) * getPrice()).toFixed(2);
+  const currency = els.currency.value;
+  const t = translations[currentLanguage];
+
+  const text = t.shareText(
+    litersPerYear.toLocaleString(currentLanguage),
+    costPerYear,
+    currency
+  );
+
+  const shareData = {
+    title: t.appTitle,
+    text: text,
+    url: 'https://magicwhale.eu'
+  };
+
+  try {
+    if (navigator.share) {
+      await navigator.share(shareData);
+    } else {
+      await navigator.clipboard.writeText(text + ' ' + shareData.url);
+      alert('✅ Copied to clipboard!');
+    }
+  } catch (err) {
+    if (err.name !== 'AbortError') {
+      console.warn('Share error:', err);
+    }
+  }
+}
+
+document.addEventListener('DOMContentLoaded', init);
+</script>
+</body>
+</html>
