@@ -5,7 +5,7 @@
   <project_license>MIT</project_license>
   <name>Water Leak Calculator</name>
   <summary>Calculate water and money lost from a leaking faucet</summary>
-  
+
   <description>
     <p>
       Calculate how much water and money you lose from a leaking faucet.
@@ -16,12 +16,16 @@
       Free, open source, and no tracking.
     </p>
   </description>
-  
+
   <launchable type="desktop-id">eu.magicwhale.WaterLeak.desktop</launchable>
+
+  <icon type="stock">eu.magicwhale.WaterLeak</icon>
+
   <url type="homepage">https://magicwhale.eu</url>
   <url type="bugtracker">https://github.com/groenklimaat/waterleak-calculator/issues</url>
+
   <developer_name>Bleu Magic Whale</developer_name>
-  
+
   <releases>
     <release version="1.0.0" date="2026-10-10">
       <description>
@@ -29,14 +33,14 @@
       </description>
     </release>
   </releases>
-  
+
   <content_rating type="oars-1.1"/>
-  
+
   <categories>
     <category>Utility</category>
     <category>Calculator</category>
   </categories>
-  
+
   <keywords>
     <keyword>water</keyword>
     <keyword>leak</keyword>
