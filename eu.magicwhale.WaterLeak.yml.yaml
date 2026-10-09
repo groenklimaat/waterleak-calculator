@@ -1,0 +1,26 @@
+id: eu.magicwhale.WaterLeak
+runtime: org.freedesktop.Platform
+runtime-version: '25.08'
+sdk: org.freedesktop.Sdk
+command: waterleak
+
+finish-args:
+  - --share=ipc
+  - --socket=wayland
+  - --socket=fallback-x11
+  - --device=dri
+
+modules:
+  - name: waterleak
+    buildsystem: simple
+    build-commands:
+      - mkdir -p /app/share/waterleak
+      - cp -r index.html /app/share/waterleak/
+      - install -Dm644 eu.magicwhale.WaterLeak.svg /app/share/icons/hicolor/scalable/apps/
+      - install -Dm644 eu.magicwhale.WaterLeak-128.png /app/share/icons/hicolor/128x128/apps/
+      - install -Dm644 eu.magicwhale.WaterLeak-512.png /app/share/icons/hicolor/512x512/apps/
+      - install -Dm755 waterleak.sh /app/bin/waterleak
+      - install -Dm644 eu.magicwhale.WaterLeak.metainfo.xml /app/share/metainfo/
+    sources:
+      - type: dir
+        path: .
