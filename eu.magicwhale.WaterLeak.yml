@@ -14,13 +14,28 @@ modules:
   - name: waterleak
     buildsystem: simple
     build-commands:
+      # Maak alle benodigde mappen aan
       - mkdir -p /app/share/waterleak
+      - mkdir -p /app/share/icons/hicolor/scalable/apps
+      - mkdir -p /app/share/icons/hicolor/128x128/apps
+      - mkdir -p /app/share/icons/hicolor/512x512/apps
+      - mkdir -p /app/share/metainfo
+      - mkdir -p /app/bin
+      
+      # Kopieer de HTML-tool
       - cp -r index.html /app/share/waterleak/
-      - install -Dm644 eu.magicwhale.WaterLeak.svg /app/share/icons/hicolor/scalable/apps/
-      - install -Dm644 eu.magicwhale.WaterLeak-128.png /app/share/icons/hicolor/128x128/apps/
-      - install -Dm644 eu.magicwhale.WaterLeak-512.png /app/share/icons/hicolor/512x512/apps/
-      - install -Dm755 waterleak.sh /app/bin/waterleak
-      - install -Dm644 eu.magicwhale.WaterLeak.metainfo.xml /app/share/metainfo/
+      
+      # Installeer de iconen
+      - cp eu.magicwhale.WaterLeak.svg /app/share/icons/hicolor/scalable/apps/
+      - cp eu.magicwhale.WaterLeak-128.png /app/share/icons/hicolor/128x128/apps/
+      - cp eu.magicwhale.WaterLeak-512.png /app/share/icons/hicolor/512x512/apps/
+      
+      # Installeer de metainfo
+      - cp eu.magicwhale.WaterLeak.metainfo.xml /app/share/metainfo/
+      
+      # Installeer het startscript
+      - cp waterleak.sh /app/bin/waterleak
+      - chmod +x /app/bin/waterleak
     sources:
       - type: dir
         path: .
